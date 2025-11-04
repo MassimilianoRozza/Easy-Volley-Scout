@@ -1,39 +1,47 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { PlayerStats, TeamStats, ReceptionEvaluations, AttackEvaluations, ServiceEvaluations, DefenseEvaluations } from '../models/ScoutData';
 import html2pdf from 'html2pdf.js';
 
 function StatisticalReport({ playerStatsList, matchName }) {
     const reportRef = useRef();
 
-    if (!playerStatsList || playerStatsList.length === 0) {
+    const { processedPlayerStats, teamStats } = useMemo(() => {
+        if (!playerStatsList || playerStatsList.length === 0) {
+            return { processedPlayerStats: [], teamStats: new TeamStats() };
+        }
+
+        const stats = playerStatsList.map(ps => {
+            const validPlayerStats = new PlayerStats(ps.athlete);
+            const fundamentals = { reception: ReceptionEvaluations, attack: AttackEvaluations, service: ServiceEvaluations, defense: DefenseEvaluations };
+
+            Object.keys(fundamentals).forEach(fundName => {
+                if (ps[fundName]) {
+                    Object.values(fundamentals[fundName]).forEach(evalKey => {
+                        validPlayerStats[fundName][evalKey] = ps[fundName][evalKey] || 0;
+                    });
+                }
+            });
+
+            validPlayerStats.calculateAllStats();
+            return validPlayerStats;
+        });
+
+        const newTeamStats = new TeamStats();
+        stats.forEach(ps => newTeamStats.addPlayer(ps));
+        newTeamStats.calculateTeamTotals();
+
+        return { processedPlayerStats: stats, teamStats: newTeamStats };
+    }, [playerStatsList]);
+
+    if (!processedPlayerStats || processedPlayerStats.length === 0) {
         return <div>No scouting data available to generate report.</div>;
     }
 
-    // Heal the data: Ensure all playerStats are proper class instances with methods
-    const processedPlayerStats = playerStatsList.map(ps => {
-        const validPlayerStats = new PlayerStats(ps.athlete);
-
-        // Manually copy raw counts to the new valid instance
-        const fundamentals = { reception: ReceptionEvaluations, attack: AttackEvaluations, service: ServiceEvaluations, defense: DefenseEvaluations };
-        Object.keys(fundamentals).forEach(fundName => {
-            if (ps[fundName]) {
-                Object.values(fundamentals[fundName]).forEach(evalKey => {
-                    validPlayerStats[fundName][evalKey] = ps[fundName][evalKey] || 0;
-                });
-            }
-        });
-
-        // Now that the instance is valid and has the counts, calculate the stats
-        validPlayerStats.calculateAllStats();
-        return validPlayerStats;
-    });
-
-    const teamStats = new TeamStats();
-    processedPlayerStats.forEach(ps => teamStats.addPlayer(ps));
-    teamStats.calculateTeamTotals();
-
     const handleExportPdf = () => {
         const element = reportRef.current;
+        const table = element.querySelector('table');
+        table.classList.add('pdf-export-table');
+
         const opt = {
             margin: 0.5,
             filename: `${matchName || 'volleyball_scout_report'}.pdf`,
@@ -41,7 +49,10 @@ function StatisticalReport({ playerStatsList, matchName }) {
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
         };
-        html2pdf().set(opt).from(element).save();
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            table.classList.remove('pdf-export-table'); // Cleanup after export
+        });
     };
 
     const getEvaluationKeysForFundamental = (fundamentalName) => {
@@ -59,7 +70,6 @@ function StatisticalReport({ playerStatsList, matchName }) {
         }
     };
 
-    // Get all unique evaluation keys across all fundamentals for consistent column ordering
     const allUniqueEvaluationKeys = [...new Set([
         ...Object.values(ReceptionEvaluations),
         ...Object.values(AttackEvaluations),
@@ -83,8 +93,7 @@ function StatisticalReport({ playerStatsList, matchName }) {
         );
     };
 
-    // Calculate colSpan for each fundamental header
-    const calculateColSpan = (fundamentalName) => {
+    const calculateColSpan = () => {
         const fixedStatsColumns = 3; // TOT, Pos%, Eff%
         return fixedStatsColumns + allUniqueEvaluationKeys.length;
     };
@@ -100,10 +109,10 @@ function StatisticalReport({ playerStatsList, matchName }) {
                             <th rowSpan="2">#</th>
                             <th rowSpan="2">Name</th>
                             <th rowSpan="2">Surname</th>
-                            <th colSpan={calculateColSpan('Service')}>Service</th>
-                            <th colSpan={calculateColSpan('Reception')}>Reception</th>
-                            <th colSpan={calculateColSpan('Attack')}>Attack</th>
-                            <th colSpan={calculateColSpan('Defense')}>Defense</th>
+                            <th colSpan={calculateColSpan()}>Service</th>
+                            <th colSpan={calculateColSpan()}>Reception</th>
+                            <th colSpan={calculateColSpan()}>Attack</th>
+                            <th colSpan={calculateColSpan()}>Defense</th>
                         </tr>
                         <tr>
                             {/* Service Headers */}
@@ -146,7 +155,6 @@ function StatisticalReport({ playerStatsList, matchName }) {
                                 </tr>
                             );
                         })}
-                        {/* Team Totals Row */}
                         <tr className="team-totals">
                             <td colSpan="3">DI SQUADRA</td>
                             {renderFundamentalRow(teamStats.teamService, 'Service')}

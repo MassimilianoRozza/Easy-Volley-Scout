@@ -41,6 +41,28 @@
   margin: 0;
 }
 
+.header-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.icon-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 .App-header button {
   background-color: var(--button-background-color-light, #61dafb);
   color: white;
@@ -356,4 +378,16 @@ ul li {
   .athlete-grid-container {
     grid-template-columns: 1fr; /* Stack athletes in a single column */
   }
+}
+
+/* PDF Export Specific Styles */
+.pdf-export-table th,
+.pdf-export-table td {
+    border: 1px solid black !important;
+}
+
+/* PDF Export Specific Styles */
+.pdf-export-table th,
+.pdf-export-table td {
+    border: 1px solid black !important;
 }

@@ -9,15 +9,24 @@ function AthleteForm({ onAddAthlete }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (jerseyNumber) { // Only jerseyNumber is required now
-            const newAthlete = new Athlete(jerseyNumber, name, surname);
-            onAddAthlete(newAthlete);
-            setJerseyNumber('');
-            setName('');
-            setSurname('');
-        } else {
-            alert('Please fill in all fields.');
+
+        if (!jerseyNumber) {
+            alert('Jersey number is required.');
+            return;
         }
+
+        const num = parseInt(jerseyNumber, 10);
+
+        if (isNaN(num) || num < 1 || num > 99 || jerseyNumber.includes('.') || jerseyNumber.includes(',')) {
+            alert('Jersey number must be an integer between 1 and 99.');
+            return;
+        }
+
+        const newAthlete = new Athlete(jerseyNumber, name, surname);
+        onAddAthlete(newAthlete);
+        setJerseyNumber('');
+        setName('');
+        setSurname('');
     };
 
     return (

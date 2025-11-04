@@ -46,6 +46,10 @@ class FundamentalData {
         this.errors = 0;
         this.efficiency = 0;
         this.positivity = 0;
+        this['#'] = 0;
+        this['+'] = 0;
+        this['-'] = 0;
+        this['='] = 0;
     }
 
     calculateStats() {
@@ -58,21 +62,13 @@ class FundamentalData {
 }
 
 class ReceptionData extends FundamentalData {
-    constructor() {
-        super();
-        this.hash = 0;
-        this.plus = 0;
-        this.minus = 0;
-        this.equals = 0;
-    }
-
     calculateStats() {
-        this.totalAttempts = this.hash + this.plus + this.minus + this.equals;
-        this.points = 0;
-        this.errors = this.equals;
+        this.totalAttempts = this['#'] + this['+'] + this['-'] + this['='];
+        this.points = 0; // Reception does not generate direct points
+        this.errors = this['='];
         super.calculateStats();
         if (this.totalAttempts > 0) {
-            this.positivity = (this.hash + this.plus) / this.totalAttempts * 100;
+            this.positivity = (this['#'] + this['+']) / this.totalAttempts * 100;
         } else {
             this.positivity = 0;
         }
@@ -82,20 +78,16 @@ class ReceptionData extends FundamentalData {
 class AttackData extends FundamentalData {
     constructor() {
         super();
-        this.hash = 0;
-        this.plus = 0;
-        this.minus = 0;
-        this.equals = 0;
         this.M = 0; // Muro count is still tracked
     }
 
     calculateStats() {
-        this.totalAttempts = this.hash + this.plus + this.minus + this.equals + this.M;
-        this.points = this.hash;
-        this.errors = this.equals + this.M;
+        this.totalAttempts = this['#'] + this['+'] + this['-'] + this['='] + this.M;
+        this.points = this['#'];
+        this.errors = this['='] + this.M;
         super.calculateStats();
         if (this.totalAttempts > 0) {
-            this.positivity = (this.hash + this.plus) / this.totalAttempts * 100;
+            this.positivity = (this['#'] + this['+']) / this.totalAttempts * 100;
         } else {
             this.positivity = 0;
         }
@@ -103,21 +95,13 @@ class AttackData extends FundamentalData {
 }
 
 class ServiceData extends FundamentalData {
-    constructor() {
-        super();
-        this.hash = 0;
-        this.plus = 0;
-        this.minus = 0;
-        this.equals = 0;
-    }
-
     calculateStats() {
-        this.totalAttempts = this.hash + this.plus + this.minus + this.equals;
-        this.points = this.hash;
-        this.errors = this.equals;
+        this.totalAttempts = this['#'] + this['+'] + this['-'] + this['='];
+        this.points = this['#'];
+        this.errors = this['='];
         super.calculateStats();
         if (this.totalAttempts > 0) {
-            this.positivity = (this.hash + this.plus) / this.totalAttempts * 100;
+            this.positivity = (this['#'] + this['+']) / this.totalAttempts * 100;
         } else {
             this.positivity = 0;
         }
@@ -125,21 +109,13 @@ class ServiceData extends FundamentalData {
 }
 
 class DefenseData extends FundamentalData {
-    constructor() {
-        super();
-        this.hash = 0;
-        this.plus = 0;
-        this.minus = 0;
-        this.equals = 0;
-    }
-
     calculateStats() {
-        this.totalAttempts = this.hash + this.plus + this.minus + this.equals;
-        this.points = this.hash;
-        this.errors = this.equals;
+        this.totalAttempts = this['#'] + this['+'] + this['-'] + this['='];
+        this.points = this['#']; // A defense that leads to a point
+        this.errors = this['=']; // A defense that results in an error
         super.calculateStats();
         if (this.totalAttempts > 0) {
-            this.positivity = (this.hash + this.plus) / this.totalAttempts * 100;
+            this.positivity = (this['#'] + this['+']) / this.totalAttempts * 100;
         } else {
             this.positivity = 0;
         }
@@ -186,29 +162,29 @@ class TeamStats {
             player.calculateAllStats();
 
             // Aggregate Reception
-            this.teamReception.hash += player.reception.hash;
-            this.teamReception.plus += player.reception.plus;
-            this.teamReception.minus += player.reception.minus;
-            this.teamReception.equals += player.reception.equals;
+            this.teamReception['#'] += player.reception['#'];
+            this.teamReception['+'] += player.reception['+'];
+            this.teamReception['-'] += player.reception['-'];
+            this.teamReception['='] += player.reception['='];
 
             // Aggregate Attack
-            this.teamAttack.hash += player.attack.hash;
-            this.teamAttack.plus += player.attack.plus;
-            this.teamAttack.minus += player.attack.minus;
-            this.teamAttack.equals += player.attack.equals;
+            this.teamAttack['#'] += player.attack['#'];
+            this.teamAttack['+'] += player.attack['+'];
+            this.teamAttack['-'] += player.attack['-'];
+            this.teamAttack['='] += player.attack['='];
             this.teamAttack.M += player.attack.M;
 
             // Aggregate Service
-            this.teamService.hash += player.service.hash;
-            this.teamService.plus += player.service.plus;
-            this.teamService.minus += player.service.minus;
-            this.teamService.equals += player.service.equals;
+            this.teamService['#'] += player.service['#'];
+            this.teamService['+'] += player.service['+'];
+            this.teamService['-'] += player.service['-'];
+            this.teamService['='] += player.service['='];
 
             // Aggregate Defense
-            this.teamDefense.hash += player.defense.hash;
-            this.teamDefense.plus += player.defense.plus;
-            this.teamDefense.minus += player.defense.minus;
-            this.teamDefense.equals += player.defense.equals;
+            this.teamDefense['#'] += player.defense['#'];
+            this.teamDefense['+'] += player.defense['+'];
+            this.teamDefense['-'] += player.defense['-'];
+            this.teamDefense['='] += player.defense['='];
         });
 
         this.teamReception.calculateStats();

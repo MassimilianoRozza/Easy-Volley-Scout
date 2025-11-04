@@ -81,14 +81,14 @@ function StatisticalReport({ playerStatsList, matchName }) {
         const evaluationKeys = getEvaluationKeysForFundamental(fundamentalName);
         return (
             <>
-                <td>{data.tot}</td>
+                <td>{data.totalAttempts}</td>
                 {allUniqueEvaluationKeys.map(key => (
                     <td key={key}>
                         {evaluationKeys.includes(key) ? (data[key] || 0) : '-'}
                     </td>
                 ))}
-                <td>{data.pos}%</td>
-                <td>{data.eff}%</td>
+                <td>{Math.round(data.positivity)}%</td>
+                <td>{Math.round(data.efficiency)}%</td>
             </>
         );
     };

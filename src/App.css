@@ -6,6 +6,7 @@
   background-color: var(--background-color-light);
   color: var(--text-color-light);
   transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
 }
 
 .App.dark-theme {
@@ -349,4 +350,10 @@ ul li {
       cursor: pointer;
       color: var(--text-color-light);
     }
-    
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .athlete-grid-container {
+    grid-template-columns: 1fr; /* Stack athletes in a single column */
+  }
+}

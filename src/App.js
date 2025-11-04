@@ -20,6 +20,16 @@ function App() {
         setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
     };
 
+    const toggleFullScreen = () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    };
+
     const handleAddAthlete = (newAthlete) => {
         setAthletes((prevAthletes) => {
             // Check if athlete with same jerseyNumber already exists
@@ -120,7 +130,10 @@ function App() {
             <div className={`App ${theme}-theme`}>
                 <header className="App-header">
                     <h1>Volleyball Scout App</h1>
-                    <button onClick={toggleTheme}>Toggle {theme === 'light' ? 'Dark' : 'Light'} Theme</button>
+                    <div>
+                        <button onClick={toggleFullScreen}>Toggle Fullscreen</button>
+                        <button onClick={toggleTheme} style={{marginLeft: '10px'}}>Toggle {theme === 'light' ? 'Dark' : 'Light'} Theme</button>
+                    </div>
                 </header>
                 <main>
                     {renderContent()}

@@ -2,6 +2,29 @@ import React, { useRef, useMemo } from 'react';
 import { PlayerStats, TeamStats, ReceptionEvaluations, AttackEvaluations, ServiceEvaluations, DefenseEvaluations } from '../models/ScoutData';
 import html2pdf from 'html2pdf.js';
 
+// Style for Positivity (0% to 100%)
+const getPositivityCellStyle = (value) => {
+    if (value >= 75) return { backgroundColor: '#28a745', color: 'white' }; // Dark Green
+    if (value >= 50) return { backgroundColor: '#82ca9d', color: 'black' }; // Light Green
+    if (value > 0) return { backgroundColor: '#a8e6cf', color: 'black' };   // Lighter Green
+    if (value === 0) return {}; // Neutral for 0
+    return { backgroundColor: '#dc3545', color: 'white' }; // Red for any negative case (should not happen in positivity)
+};
+
+// Style for Efficiency (-100% to 100%)
+const getEfficiencyCellStyle = (value) => {
+    // Positive values (Green scale)
+    if (value >= 75) return { backgroundColor: '#28a745', color: 'white' }; // Dark Green
+    if (value >= 50) return { backgroundColor: '#82ca9d', color: 'black' }; // Light Green
+    if (value > 0) return { backgroundColor: '#a8e6cf', color: 'black' };   // Lighter Green
+
+    // Negative values (Red scale)
+    if (value <= -50) return { backgroundColor: '#dc3545', color: 'white' }; // Dark Red
+    if (value < 0) return { backgroundColor: '#f5c6cb', color: 'black' }; // Light Red
+
+    return {}; // Neutral for 0
+};
+
 function StatisticalReport({ playerStatsList, matchName }) {
     const reportRef = useRef();
 
@@ -79,6 +102,25 @@ function StatisticalReport({ playerStatsList, matchName }) {
 
     const renderFundamentalRow = (data, fundamentalName) => {
         const evaluationKeys = getEvaluationKeysForFundamental(fundamentalName);
+        const positivity = Math.round(data.positivity);
+        const efficiency = Math.round(data.efficiency);
+
+        // Do not apply color if there are no attempts
+        if (data.totalAttempts === 0) {
+            return (
+                <>
+                    <td>{data.totalAttempts}</td>
+                    {allUniqueEvaluationKeys.map(key => (
+                        <td key={key}>
+                            {evaluationKeys.includes(key) ? (data[key] || 0) : '-'}
+                        </td>
+                    ))}
+                    <td>{positivity}%</td>
+                    <td>{efficiency}%</td>
+                </>
+            );
+        }
+
         return (
             <>
                 <td>{data.totalAttempts}</td>
@@ -87,8 +129,8 @@ function StatisticalReport({ playerStatsList, matchName }) {
                         {evaluationKeys.includes(key) ? (data[key] || 0) : '-'}
                     </td>
                 ))}
-                <td>{Math.round(data.positivity)}%</td>
-                <td>{Math.round(data.efficiency)}%</td>
+                <td style={getPositivityCellStyle(positivity)}>{positivity}%</td>
+                <td style={getEfficiencyCellStyle(efficiency)}>{efficiency}%</td>
             </>
         );
     };

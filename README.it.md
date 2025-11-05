@@ -1,3 +1,5 @@
+> **Nota:** Questo progetto è stato sviluppato con l'assistenza di un'IA. Le funzionalità specifiche per Android sono state implementate dall'IA, poiché l'autore originale non è uno sviluppatore Android.
+
 # App per Scout Pallavolo
 
 [Read in English](README.md)

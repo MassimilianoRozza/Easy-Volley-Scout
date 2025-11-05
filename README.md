@@ -1,3 +1,5 @@
+> **Note:** This project was developed with the assistance of an AI. The Android-specific features were implemented by the AI, as the original author is not an Android developer.
+
 # Volleyball Scout App
 
 [Leggi in Italiano](README.it.md)

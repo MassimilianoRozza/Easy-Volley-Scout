@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
     ReceptionEvaluations,
     AttackEvaluations,
@@ -6,6 +6,7 @@ import {
     DefenseEvaluations,
     PlayerStats
 } from '../models/ScoutData';
+import { LanguageContext } from '../App';
 
 const getEvaluationKeysForFundamental = (fundamentalName) => {
     switch (fundamentalName) {
@@ -20,6 +21,7 @@ const getEvaluationKeysForFundamental = (fundamentalName) => {
 const allFundamentals = ['service', 'reception', 'defense', 'attack'];
 
 function ScoutingInput({ athletes, playerStatsList, onUpdatePlayerStats }) {
+    const { t } = useContext(LanguageContext);
     const [selectedAthleteForScouting, setSelectedAthleteForScouting] = useState(null);
     const [currentEvaluationCounts, setCurrentEvaluationCounts] = useState({});
 
@@ -84,10 +86,9 @@ function ScoutingInput({ athletes, playerStatsList, onUpdatePlayerStats }) {
 
     return (
         <div className="scouting-input-container">
-            <h2>Scouting Input</h2>
 
             <div className="athlete-selection-grid">
-                <h3>Select an Athlete to Scout</h3>
+                <h3>{t('selectAthleteToScout')}</h3>
                 <div className="athlete-grid-container">
                     {athletes.map(athlete => (
                         <div key={athlete.jerseyNumber} className="athlete-grid-item" onClick={() => setSelectedAthleteForScouting(athlete)}>
@@ -102,18 +103,18 @@ function ScoutingInput({ athletes, playerStatsList, onUpdatePlayerStats }) {
                 <div className="modal-backdrop">
                     <div className="modal-content">
                         <span className="close-button" onClick={() => setSelectedAthleteForScouting(null)}>&times;</span>
-                        <h3>Currently Scouting: #{selectedAthleteForScouting.jerseyNumber} {selectedAthleteForScouting.name} {selectedAthleteForScouting.surname}</h3>
+                        <h3>{t('currentlyScouting')}: <span className="jersey-number">{selectedAthleteForScouting.jerseyNumber}</span> {selectedAthleteForScouting.name} {selectedAthleteForScouting.surname}</h3>
                         <table className="common-table">
                             <thead>
                                 <tr>
-                                    <th>Fundamental</th>
+                                    <th>{t('fundamental')}</th>
                                     {allEvaluationKeys.map(key => <th key={key}>{key}</th>)}
                                 </tr>
                             </thead>
                             <tbody>
                                 {allFundamentals.map(fundamentalName => (
                                     <tr key={fundamentalName}>
-                                        <td>{fundamentalName.charAt(0).toUpperCase() + fundamentalName.slice(1)}</td>
+                                        <td>{t(fundamentalName)}</td>
                                         {allEvaluationKeys.map(evaluationKey => (
                                             <td key={evaluationKey}>
                                                 {getEvaluationKeysForFundamental(fundamentalName).includes(evaluationKey) ? (
@@ -131,7 +132,7 @@ function ScoutingInput({ athletes, playerStatsList, onUpdatePlayerStats }) {
                                 ))}
                             </tbody>
                         </table>
-                        <button onClick={handleSaveAndClose} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px' }}>Save and Close</button>
+                        <button onClick={handleSaveAndClose} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px' }}>{t('saveAndClose')}</button>
                     </div>
                 </div>
             )}

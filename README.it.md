@@ -1,12 +1,12 @@
-> **Disclaimer:** Questo software è fornito "così com'è", senza garanzie di alcun tipo. L'autore non si assume alcuna responsabilità per eventuali errori o perdite di dati. Si consiglia agli utenti di eseguire regolarmente il backup di tutti i dati critici.
+> **Disclaimer:** Questo software è fornito "così com'è", senza garanzie di alcun tipo. Non mi assumo alcuna responsabilità per eventuali errori o perdite di dati. Si prega di eseguire regolarmente il backup di tutti i dati critici.
 
-> **Nota:** Questo progetto è stato sviluppato con l'assistenza di un'IA. Le funzionalità specifiche per Android sono state implementate dall'IA, poiché l'autore originale non è uno sviluppatore Android.
+> **Nota:** Ho sviluppato questo progetto con l'assistenza di un'IA. Le funzionalità specifiche per Android sono state implementate dall'IA, poiché non sono uno sviluppatore Android.
 
-# App per Scout Pallavolo
+# Easy-Volley-Scout
 
 [Read in English](README.md)
 
-Un'applicazione web basata su React progettata per lo scouting di partite di pallavolo. Questa applicazione consente la registrazione degli atleti, lo scouting in tempo reale delle partite, la generazione di report statistici e l'esportazione di tali report in PDF.
+Questa è Easy-Volley-Scout, un'applicazione web basata su React che ho progettato per lo scouting di partite di pallavolo. Permette la registrazione degli atleti, lo scouting in tempo reale delle partite, la generazione di report statistici e l'esportazione di tali report in PDF.
 
 ## Funzionalità
 
@@ -16,20 +16,21 @@ Un'applicazione web basata su React progettata per lo scouting di partite di pal
     10 Mario Rossi
     5 Luigi
     ```
-    Questa funzionalità è accessibile tramite un pulsante "Importa Atleti" nell'intestazione. L'inserimento manuale degli atleti rimane disponibile per integrare giocatori mancanti.
+    Questa funzionalità è accessibile tramite un pulsante "Importa Atleti" situato accanto al titolo "Aggiungi Nuovo Atleta" nella pagina di registrazione degli atleti. L'inserimento manuale degli atleti rimane disponibile per integrare giocatori mancanti.
 *   **Scouting Partita:** Un'interfaccia intuitiva per registrare le valutazioni dei fondamentali (Servizio, Ricezione, Difesa, Attacco) per ogni giocatore.
 *   **Salvataggio Automatico:** Tutte le modifiche ai contatori nell'interfaccia di scouting vengono salvate automaticamente.
 *   **Griglia di Scouting Dinamica:** Visualizza i fondamentali come righe e i tipi di valutazione (`#`, `+`, `-`, `=`) come colonne, con pulsanti di incremento/decremento rapido.
 *   **Report Statistico:** Genera una tabella completa delle statistiche individuali dei giocatori e dei totali di squadra aggregati.
 *   **Esportazione PDF:** I report possono essere esportati come file PDF. Questa funzione è supportata sia su build web che Android. Su Android, il file viene salvato nella directory `Documenti`.
 *   **Temi:** Supporta sia il tema chiaro che quello scuro.
+*   **Ottimizzazione UI per Mobile:** Il banner dell'intestazione e i titoli delle pagine vengono automaticamente nascosti nelle pagine di Scouting e Report per massimizzare lo spazio sullo schermo, specialmente sui dispositivi mobili.
 
 ## Installazione
 
 ### Prerequisiti
 
-*   [Node.js](https://nodejs.org/) e npm (o yarn) installati.
-*   [Android Studio](https://developer.android.com/studio) per le build Android.
+*   [Node.js](https://nodejs.org/) e npm (o yarn) installati. Questi sono essenziali per eseguire l'applicazione web localmente e compilarla.
+*   [Android Studio](https://developer.android.com/studio) è richiesto solo se si intende compilare l'applicazione per dispositivi Android.
 
 ### Passaggi
 

@@ -16,13 +16,14 @@ This is Easy-Volley-Scout, a React-based web application I designed for scouting
     10 Mario Rossi
     5 Luigi
     ```
-    This feature is accessible via an "Import Athletes" button in the header. Manual athlete entry remains available to integrate missing players.
+    This feature is accessible via an "Import Athletes" button located next to the "Add New Athlete" title on the athlete registration page. Manual athlete entry remains available to integrate missing players.
 *   **Match Scouting:** An intuitive interface for recording evaluations of fundamentals (Service, Reception, Defense, Attack) for each player.
 *   **Auto-saving:** All counter modifications in the scouting interface are automatically saved.
 *   **Dynamic Scouting Grid:** Displays fundamentals as rows and evaluation types (`#`, `+`, `-`, `=`) as columns, with quick increment/decrement buttons.
 *   **Statistical Reporting:** Generates a comprehensive table of individual player statistics and aggregated team totals.
 *   **PDF Export:** Reports can be exported as PDF files. This feature is supported on both web and Android builds. On Android, the file is saved to the `Documents` directory.
 *   **Theming:** Supports both light and dark themes.
+*   **UI Optimization for Mobile:** The header banner and page titles are automatically hidden on the Scouting and Report pages to maximize screen space, especially on mobile devices.
 
 ## Installation
 

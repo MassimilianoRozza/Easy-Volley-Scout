@@ -1,8 +1,9 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useContext } from 'react';
 import { PlayerStats, TeamStats, ReceptionEvaluations, AttackEvaluations, ServiceEvaluations, DefenseEvaluations } from '../models/ScoutData';
 import html2pdf from 'html2pdf.js';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
+import { LanguageContext } from '../App';
 
 // Style for Positivity (0% to 100%)
 const getPositivityCellStyle = (value) => {
@@ -28,6 +29,7 @@ const getEfficiencyCellStyle = (value) => {
 };
 
 function StatisticalReport({ playerStatsList, matchName }) {
+    const { t } = useContext(LanguageContext);
     const reportRef = useRef();
 
     const { processedPlayerStats, teamStats } = useMemo(() => {
@@ -59,7 +61,7 @@ function StatisticalReport({ playerStatsList, matchName }) {
     }, [playerStatsList]);
 
     if (!processedPlayerStats || processedPlayerStats.length === 0) {
-        return <div>No scouting data available to generate report.</div>;
+        return <div>{t('noScoutingData')}</div>;
     }
 
     const handleExportPdf = async () => {
@@ -69,7 +71,7 @@ function StatisticalReport({ playerStatsList, matchName }) {
 
         const opt = {
             margin: 0.5,
-            filename: `${matchName || 'volleyball_scout_report'}.pdf`,
+            filename: `${matchName || t('volleyballScoutReport')}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
@@ -87,11 +89,11 @@ function StatisticalReport({ playerStatsList, matchName }) {
                         data: base64data,
                         directory: Directory.Documents,
                     });
-                    alert(`PDF saved to Documents directory`);
+                    alert(t('pdfSavedToDocuments'));
                 };
             } catch (error) {
                 console.error('Error saving PDF:', error);
-                alert('Error saving PDF. See console for details.');
+                alert(t('errorSavingPdf'));
             } finally {
                 table.classList.remove('pdf-export-table');
             }
@@ -104,12 +106,12 @@ function StatisticalReport({ playerStatsList, matchName }) {
 
     const getEvaluationKeysForFundamental = (fundamentalName) => {
         switch (fundamentalName) {
+            case 'Service':
+                return Object.values(ServiceEvaluations);
             case 'Reception':
                 return Object.values(ReceptionEvaluations);
             case 'Attack':
                 return Object.values(AttackEvaluations);
-            case 'Service':
-                return Object.values(ServiceEvaluations);
             case 'Defense':
                 return Object.values(DefenseEvaluations);
             default:
@@ -166,44 +168,43 @@ function StatisticalReport({ playerStatsList, matchName }) {
 
     return (
         <div className="statistical-report">
-            <h2>Statistical Report {matchName && `for "${matchName}"`}</h2>
-            <button onClick={handleExportPdf}>Export to PDF</button>
+            <button onClick={handleExportPdf}>{t('exportToPdf')}</button>
             <div ref={reportRef}>
                 <table className="common-table">
                     <thead>
                         <tr>
                             <th rowSpan="2">#</th>
-                            <th rowSpan="2">Name</th>
-                            <th rowSpan="2">Surname</th>
-                            <th colSpan={calculateColSpan()}>Service</th>
-                            <th colSpan={calculateColSpan()}>Reception</th>
-                            <th colSpan={calculateColSpan()}>Attack</th>
-                            <th colSpan={calculateColSpan()}>Defense</th>
+                            <th rowSpan="2">{t('name')}</th>
+                            <th rowSpan="2">{t('surname')}</th>
+                            <th colSpan={calculateColSpan()}>{t('service')}</th>
+                            <th colSpan={calculateColSpan()}>{t('reception')}</th>
+                            <th colSpan={calculateColSpan()}>{t('attack')}</th>
+                            <th colSpan={calculateColSpan()}>{t('defense')}</th>
                         </tr>
                         <tr>
                             {/* Service Headers */}
-                            <th>TOT</th>
+                            <th>{t('total')}</th>
                             {allUniqueEvaluationKeys.map(key => <th key={`serv-${key}`}>{key}</th>)}
-                            <th>Pos%</th>
-                            <th>Eff%</th>
+                            <th>{t('positivity')}</th>
+                            <th>{t('efficiency')}</th>
 
                             {/* Reception Headers */}
-                            <th>TOT</th>
+                            <th>{t('total')}</th>
                             {allUniqueEvaluationKeys.map(key => <th key={`rec-${key}`}>{key}</th>)}
-                            <th>Pos%</th>
-                            <th>Eff%</th>
+                            <th>{t('positivity')}</th>
+                            <th>{t('efficiency')}</th>
 
                             {/* Attack Headers */}
-                            <th>TOT</th>
+                            <th>{t('total')}</th>
                             {allUniqueEvaluationKeys.map(key => <th key={`att-${key}`}>{key}</th>)}
-                            <th>Pos%</th>
-                            <th>Eff%</th>
+                            <th>{t('positivity')}</th>
+                            <th>{t('efficiency')}</th>
 
                             {/* Defense Headers */}
-                            <th>TOT</th>
+                            <th>{t('total')}</th>
                             {allUniqueEvaluationKeys.map(key => <th key={`def-${key}`}>{key}</th>)}
-                            <th>Pos%</th>
-                            <th>Eff%</th>
+                            <th>{t('positivity')}</th>
+                            <th>{t('efficiency')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -222,7 +223,7 @@ function StatisticalReport({ playerStatsList, matchName }) {
                             );
                         })}
                         <tr className="team-totals">
-                            <td colSpan="3">DI SQUADRA</td>
+                            <td colSpan="3">{t('teamTotals')}</td>
                             {renderFundamentalRow(teamStats.teamService, 'Service')}
                             {renderFundamentalRow(teamStats.teamReception, 'Reception')}
                             {renderFundamentalRow(teamStats.teamAttack, 'Attack')}

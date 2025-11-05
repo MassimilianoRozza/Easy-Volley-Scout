@@ -1,3 +1,5 @@
+> **Disclaimer:** This software is provided "as is", without warranty of any kind, express or implied. The author assumes no responsibility for any errors or data loss. Users are advised to regularly back up any critical data.
+
 > **Note:** This project was developed with the assistance of an AI. The Android-specific features were implemented by the AI, as the original author is not an Android developer.
 
 # Volleyball Scout App
@@ -91,9 +93,3 @@ The application follows a clear, stage-based navigation:
 
 *   The application is specifically designed for volleyball scouting.
 *   The Android build requires permissions to write to the device's storage. The PDF is saved in the `Documents` folder.
-
-## License & Disclaimer
-
-This software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
-
-Specifically, the author assumes no responsibility for any errors or data loss related to the saving of scouting actions or any other data within the application. Users are advised to regularly back up any critical data.

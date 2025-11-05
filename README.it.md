@@ -29,7 +29,7 @@ Un'applicazione web basata su React progettata per lo scouting di partite di pal
 
 1.  Clona la repository:
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/MassimilianoRozza/Easy-Volley-Scout.git
     ```
 2.  Naviga nella directory del progetto:
     ```bash

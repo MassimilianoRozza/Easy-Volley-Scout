@@ -1,12 +1,12 @@
-> **Disclaimer:** This software is provided "as is", without warranty of any kind, express or implied. The author assumes no responsibility for any errors or data loss. Users are advised to regularly back up any critical data.
+> **Disclaimer:** This software is provided "as is", without warranty of any kind, express or implied. I assume no responsibility for any errors or data loss.
 
-> **Note:** This project was developed with the assistance of an AI. The Android-specific features were implemented by the AI, as the original author is not an Android developer.
+> **Note:** I developed this project with the assistance of an AI. The Android-specific features were implemented by the AI, as I am not an Android developer.
 
-# Volleyball Scout App
+# Easy-Volley-Scout
 
 [Leggi in Italiano](README.it.md)
 
-A React-based web application designed for scouting volleyball matches. This application allows for athlete registration, real-time match scouting, generation of statistical reports, and exporting these reports to PDF.
+This is Easy-Volley-Scout, a React-based web application I designed for scouting volleyball matches. It allows for athlete registration, real-time match scouting, generation of statistical reports, and exporting these reports to PDF.
 
 ## Features
 
@@ -28,8 +28,7 @@ A React-based web application designed for scouting volleyball matches. This app
 
 ### Prerequisites
 
-*   [Node.js](https://nodejs.org/) and npm (or yarn) installed.
-*   [Android Studio](https://developer.android.com/studio) for Android builds.
+*   [Node.js](https://nodejs.org/) and npm (or yarn) installed. These are essential for running the web application locally and building it.
 
 ### Steps
 
@@ -48,6 +47,7 @@ A React-based web application designed for scouting volleyball matches. This app
 
 ## Running the Application (Development)
 
+### Instructions
 To run the application in development mode:
 
 ```bash

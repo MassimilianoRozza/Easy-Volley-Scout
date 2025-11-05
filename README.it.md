@@ -91,3 +91,9 @@ L'applicazione segue una navigazione chiara e basata sulle fasi:
 
 *   L'applicazione è progettata specificamente per lo scouting della pallavolo.
 *   La build per Android richiede i permessi per scrivere sulla memoria del dispositivo. Il PDF viene salvato nella cartella `Documenti`.
+
+## Licenza e Disclaimer
+
+Questo software è fornito "così com'è", senza garanzie di alcun tipo, esplicite o implicite, incluse ma non limitate alle garanzie di commerciabilità, idoneità per uno scopo particolare e non violazione. In nessun caso gli autori o i detentori del copyright saranno responsabili per qualsiasi reclamo, danno o altra responsabilità, sia in un'azione contrattuale, illecito o altro, derivante da, fuori o in connessione con il software o l'uso o altri rapporti nel software.
+
+In particolare, l'autore non si assume alcuna responsabilità per eventuali errori o perdite di dati relativi al salvataggio delle azioni di scouting o di qualsiasi altro dato all'interno dell'applicazione. Si consiglia agli utenti di eseguire regolarmente il backup di tutti i dati critici.

@@ -169,7 +169,7 @@ function StatisticalReport({ playerStatsList, matchName }) {
             <h2>Statistical Report {matchName && `for "${matchName}"`}</h2>
             <button onClick={handleExportPdf}>Export to PDF</button>
             <div ref={reportRef}>
-                <table>
+                <table className="common-table">
                     <thead>
                         <tr>
                             <th rowSpan="2">#</th>

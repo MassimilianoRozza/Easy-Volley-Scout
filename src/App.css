@@ -25,6 +25,11 @@
   --table-row-even-background-color-light: #4c4c4c;
   --table-row-hover-background-color-light: #5a5a5a;
   --team-totals-background-color-light: #777;
+  --increment-button-color-light: #4CAF50;
+  --increment-button-hover-color-light: #45a049;
+  --decrement-button-color-light: #f44336;
+  --decrement-button-hover-color-light: #da190b;
+  --jersey-number-color-light: #61dafb;
 }
 
 .App-header {
@@ -66,11 +71,11 @@
 .App-header button {
   background-color: var(--button-background-color-light, #61dafb);
   color: white;
-  padding: 8px 12px;
+  padding: 10px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   transition: background-color 0.3s ease;
 }
 
@@ -92,7 +97,7 @@ h2 {
   color: var(--text-color-light, #282c34);
   border-bottom: 2px solid var(--border-color-light, #eee);
   padding-bottom: 10px;
-  margin-top: 30px;
+  margin-top: 20px;
   transition: color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -100,7 +105,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   padding: 20px;
   border: 1px solid var(--border-color-light, #ddd);
   border-radius: 8px;
@@ -144,7 +149,6 @@ main > button {
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s ease;
-  margin-right: 10px; /* For navigation buttons */
 }
 
 form button:hover,
@@ -190,22 +194,25 @@ ul li {
 }
 
 .evaluation-input-cell .increment-button {
-  background-color: #4CAF50; /* Green for '+' */
-  font-size: 18px; /* Larger font size for '+' */
-  padding: 7px 12px;
-  min-width: 35px;
+  background-color: var(--increment-button-color-light, #4CAF50); /* Green for '+' */
+  font-size: 22px; /* Even Larger font size for '+' */
+  padding: 10px 15px;
+  min-width: 40px;
 }
 
 .evaluation-input-cell .increment-button:hover {
-  background-color: #45a049;
+  background-color: var(--increment-button-hover-color-light, #45a049);
 }
 
 .evaluation-input-cell .decrement-button {
-  background-color: #f44336; /* Red for '-' */
+  background-color: var(--decrement-button-color-light, #f44336); /* Red for '-' */
+  font-size: 12px; /* Smaller font size for '-' */
+  padding: 3px 8px;
+  min-width: 25px;
 }
 
 .evaluation-input-cell .decrement-button:hover {
-  background-color: #da190b;
+  background-color: var(--decrement-button-hover-color-light, #da190b);
 }
 
 .evaluation-input-cell span {
@@ -217,19 +224,14 @@ ul li {
 
 
 /* Statistical Report Table Styles */
-.statistical-report {
-  margin-top: 30px;
-  overflow-x: auto; /* Allows table to scroll horizontally if too wide */
-}
-
-.statistical-report table {
+.common-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-.statistical-report th,
-.statistical-report td {
+.common-table th,
+.common-table td {
   border: 1px solid var(--border-color-light, #ddd);
   padding: 8px;
   text-align: center;
@@ -238,20 +240,46 @@ ul li {
   transition: border-color 0.3s ease, color 0.3s ease;
 }
 
-.statistical-report th {
+.common-table th {
   background-color: var(--table-header-background-color-light, #f2f2f2);
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
-.statistical-report tr:nth-child(even) {
+.common-table tr:nth-child(even) {
   background-color: var(--table-row-even-background-color-light, #f9f9f9);
   transition: background-color 0.3s ease;
 }
 
-.statistical-report tr:hover {
+.common-table tr:hover {
   background-color: var(--table-row-hover-background-color-light, #f1f1f1);
   transition: background-color 0.3s ease;
+}
+
+.statistical-report {
+  margin-top: 20px;
+  overflow-x: auto; /* Allows table to scroll horizontally if too wide */
+}
+
+.statistical-report table {
+  /* Removed redundant styles, now uses .common-table */
+}
+
+.statistical-report th,
+.statistical-report td {
+  /* Removed redundant styles, now uses .common-table */
+}
+
+.statistical-report th {
+  /* Removed redundant styles, now uses .common-table */
+}
+
+.statistical-report tr:nth-child(even) {
+  /* Removed redundant styles, now uses .common-table */
+}
+
+.statistical-report tr:hover {
+  /* Removed redundant styles, now uses .common-table */
 }
 
 .statistical-report .team-totals {
@@ -292,39 +320,16 @@ ul li {
   color: var(--text-color-light);
 }
 
+.athlete-grid-item .jersey-number {
+  font-size: 1.5em; /* Increased font size */
+  font-weight: bold;
+  color: var(--jersey-number-color-light, #61dafb); /* New color */
+}
+
 .athlete-grid-item p {
   margin: 0;
   font-size: 0.9em;
   color: var(--text-color-light);
-}
-
-/* Scouting Evaluation Table Styles */
-.scouting-evaluation-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.scouting-evaluation-table th,
-.scouting-evaluation-table td {
-  border: 1px solid var(--border-color-light, #ddd);
-  padding: 8px;
-  text-align: center;
-  white-space: nowrap;
-  color: var(--text-color-light);
-}
-
-.scouting-evaluation-table th {
-  background-color: var(--table-header-background-color-light, #f2f2f2);
-  font-weight: bold;
-}
-
-.scouting-evaluation-table tbody tr:nth-child(even) {
-  background-color: var(--table-row-even-background-color-light, #f9f9f9);
-}
-
-.scouting-evaluation-table tbody tr:hover {
-  background-color: var(--table-row-hover-background-color-light, #f1f1f1);
 }
 
 .scouting-table-form {
@@ -378,12 +383,6 @@ ul li {
   .athlete-grid-container {
     grid-template-columns: 1fr; /* Stack athletes in a single column */
   }
-}
-
-/* PDF Export Specific Styles */
-.pdf-export-table th,
-.pdf-export-table td {
-    border: 1px solid black !important;
 }
 
 /* PDF Export Specific Styles */

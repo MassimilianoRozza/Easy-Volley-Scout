@@ -14,14 +14,6 @@ const MoonIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
 );
 
-const FullscreenEnterIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-);
-
-const FullscreenExitIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
-);
-
 
 // Create a Theme Context
 const ThemeContext = createContext(null);
@@ -32,30 +24,73 @@ function App() {
     const [matchName, setMatchName] = useState(''); // New state for match name
     const [appStage, setAppStage] = useState('setup'); // 'setup', 'athletes', 'scouting', 'report'
     const [theme, setTheme] = useState('dark'); // 'light' or 'dark'
-    const [showReport, setShowReport] = useState(false); // New state for report visibility
-    const [isFullscreen, setIsFullscreen] = useState(false);
 
     const toggleTheme = () => {
         setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
     };
 
-    const toggleFullScreen = () => {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen();
-        } else {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
+    const handleImportAthletes = (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
         }
-    };
 
-    useEffect(() => {
-        const handleFullscreenChange = () => {
-            setIsFullscreen(!!document.fullscreenElement);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const content = e.target.result;
+            const lines = content.split(/\r\n|\n|\r/);
+            const newAthletes = [];
+            const newPlayerStats = [];
+            const errors = [];
+
+            lines.forEach((line, index) => {
+                const trimmedLine = line.trim();
+                if (trimmedLine === '') return; // Skip empty lines
+
+                const parts = trimmedLine.split(' ');
+                if (parts.length < 2) {
+                    errors.push(`Line ${index + 1}: Invalid format. Expected at least jerseyNumber and name.`);
+                    return;
+                }
+
+                const jerseyNumber = parseInt(parts[0], 10);
+                const name = parts[1];
+                const surname = parts.slice(2).join(' ') || '';
+
+                if (isNaN(jerseyNumber) || jerseyNumber <= 0) {
+                    errors.push(`Line ${index + 1}: Invalid jersey number. Must be a positive number.`);
+                    return;
+                }
+                if (!name) {
+                    errors.push(`Line ${index + 1}: Name is mandatory.`);
+                    return;
+                }
+
+                const existingAthlete = athletes.find(a => a.jerseyNumber === jerseyNumber);
+                if (existingAthlete) {
+                    errors.push(`Line ${index + 1}: Athlete with jersey number ${jerseyNumber} already exists. Skipping.`);
+                    return;
+                }
+
+                const athlete = { jerseyNumber, name, surname };
+                newAthletes.push(athlete);
+                newPlayerStats.push(new PlayerStats(athlete));
+            });
+
+            if (newAthletes.length > 0) {
+                setAthletes(prevAthletes => [...prevAthletes, ...newAthletes]);
+                setPlayerStatsList(prevPlayerStatsList => [...prevPlayerStatsList, ...newPlayerStats]);
+                alert(`Successfully imported ${newAthletes.length} athletes.`);
+            }
+
+            if (errors.length > 0) {
+                alert(`Import completed with errors:\n${errors.join('\n')}`);
+            }
+            // Clear the file input value so that the same file can be selected again
+            event.target.value = null;
         };
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    }, []);
+        reader.readAsText(file);
+    };
 
     const handleAddAthlete = (newAthlete) => {
         // Check if athlete with same jerseyNumber already exists
@@ -110,7 +145,7 @@ function App() {
                             <ul>
                                 {athletes.map((athlete, index) => (
                                     <li key={index}>
-                                        #{athlete.jerseyNumber} - {athlete.name} {athlete.surname}
+                                        <span className="jersey-number">{athlete.jerseyNumber}</span> - {athlete.name} {athlete.surname}
                                     </li>
                                 ))}
                             </ul>
@@ -136,10 +171,7 @@ function App() {
             case 'report':
                 return (
                     <>
-                        <button onClick={() => setShowReport(!showReport)}>
-                            {showReport ? 'Hide Report' : 'Show Report'}
-                        </button>
-                        {showReport && <StatisticalReport playerStatsList={playerStatsList} matchName={matchName} />}
+                        <StatisticalReport playerStatsList={playerStatsList} matchName={matchName} />
                         <button onClick={() => setAppStage('scouting')}>Back to Scouting</button>
                     </>
                 );
@@ -151,18 +183,28 @@ function App() {
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
             <div className={`App ${theme}-theme`}>
-                <header className="App-header">
-                    <h1>Volleyball Scout App</h1>
-                    <div className="header-icons">
-                        <button onClick={toggleFullScreen} className="icon-button">
-                            {isFullscreen ? <FullscreenExitIcon /> : <FullscreenEnterIcon />}
-                        </button>
-                        <button onClick={toggleTheme} className="icon-button">
-                            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
-                        </button>
-                    </div>
-                </header>
-                <main>
+                                <header className="App-header">
+                                    {appStage === 'setup' && <h1>Volleyball Scout App</h1>}
+                                    <div className="header-icons">
+                                        <input
+                                            type="file"
+                                            id="importAthletesFile"
+                                            accept=".txt,.md"
+                                            style={{ display: 'none' }}
+                                            onChange={handleImportAthletes}
+                                        />
+                                        <button
+                                            onClick={() => document.getElementById('importAthletesFile').click()}
+                                            className="icon-button"
+                                            title="Import Athletes"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.2a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                                        </button>
+                                        <button onClick={toggleTheme} className="icon-button">
+                                            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
+                                        </button>
+                                    </div>
+                                </header>                <main>
                     {renderContent()}
                 </main>
             </div>

@@ -11,6 +11,12 @@ A React-based web application designed for scouting volleyball matches. This app
 ## Features
 
 *   **Athlete Management:** Register athletes with jersey numbers, names, and surnames.
+*   **Import Athletes from File:** Easily import a list of athletes from a text file (.txt or .md). Each line in the file should represent one athlete, with the format: `jerseyNumber name surname`. Only `jerseyNumber` and `name` are mandatory. For example:
+    ```
+    10 Mario Rossi
+    5 Luigi
+    ```
+    This feature is accessible via an "Import Athletes" button in the header. Manual athlete entry remains available to integrate missing players.
 *   **Match Scouting:** An intuitive interface for recording evaluations of fundamentals (Service, Reception, Defense, Attack) for each player.
 *   **Auto-saving:** All counter modifications in the scouting interface are automatically saved.
 *   **Dynamic Scouting Grid:** Displays fundamentals as rows and evaluation types (`#`, `+`, `-`, `=`) as columns, with quick increment/decrement buttons.

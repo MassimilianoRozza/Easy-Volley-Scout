@@ -11,6 +11,12 @@ Un'applicazione web basata su React progettata per lo scouting di partite di pal
 ## Funzionalità
 
 *   **Gestione Atleti:** Registra gli atleti con numero di maglia, nome e cognome.
+*   **Importazione Atleti da File:** Importa facilmente un elenco di atleti da un file di testo (.txt o .md). Ogni riga del file dovrebbe rappresentare un atleta, con il formato: `numeroMaglia nome cognome`. Solo `numeroMaglia` e `nome` sono obbligatori. Ad esempio:
+    ```
+    10 Mario Rossi
+    5 Luigi
+    ```
+    Questa funzionalità è accessibile tramite un pulsante "Importa Atleti" nell'intestazione. L'inserimento manuale degli atleti rimane disponibile per integrare giocatori mancanti.
 *   **Scouting Partita:** Un'interfaccia intuitiva per registrare le valutazioni dei fondamentali (Servizio, Ricezione, Difesa, Attacco) per ogni giocatore.
 *   **Salvataggio Automatico:** Tutte le modifiche ai contatori nell'interfaccia di scouting vengono salvate automaticamente.
 *   **Griglia di Scouting Dinamica:** Visualizza i fondamentali come righe e i tipi di valutazione (`#`, `+`, `-`, `=`) come colonne, con pulsanti di incremento/decremento rapido.

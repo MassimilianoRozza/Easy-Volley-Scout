@@ -91,7 +91,7 @@ function ScoutingInput({ athletes, playerStatsList, onUpdatePlayerStats }) {
                 <div className="athlete-grid-container">
                     {athletes.map(athlete => (
                         <div key={athlete.jerseyNumber} className="athlete-grid-item" onClick={() => setSelectedAthleteForScouting(athlete)}>
-                            <h4>#{athlete.jerseyNumber}</h4>
+                            <h4><span className="jersey-number">{athlete.jerseyNumber}</span></h4>
                             <p>{athlete.name} {athlete.surname}</p>
                         </div>
                     ))}
@@ -103,7 +103,7 @@ function ScoutingInput({ athletes, playerStatsList, onUpdatePlayerStats }) {
                     <div className="modal-content">
                         <span className="close-button" onClick={() => setSelectedAthleteForScouting(null)}>&times;</span>
                         <h3>Currently Scouting: #{selectedAthleteForScouting.jerseyNumber} {selectedAthleteForScouting.name} {selectedAthleteForScouting.surname}</h3>
-                        <table className="scouting-evaluation-table">
+                        <table className="common-table">
                             <thead>
                                 <tr>
                                     <th>Fundamental</th>

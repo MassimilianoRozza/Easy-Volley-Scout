@@ -1,6 +1,8 @@
 import React, { useRef, useMemo } from 'react';
 import { PlayerStats, TeamStats, ReceptionEvaluations, AttackEvaluations, ServiceEvaluations, DefenseEvaluations } from '../models/ScoutData';
 import html2pdf from 'html2pdf.js';
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 // Style for Positivity (0% to 100%)
 const getPositivityCellStyle = (value) => {
@@ -60,7 +62,7 @@ function StatisticalReport({ playerStatsList, matchName }) {
         return <div>No scouting data available to generate report.</div>;
     }
 
-    const handleExportPdf = () => {
+    const handleExportPdf = async () => {
         const element = reportRef.current;
         const table = element.querySelector('table');
         table.classList.add('pdf-export-table');
@@ -73,9 +75,31 @@ function StatisticalReport({ playerStatsList, matchName }) {
             jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
         };
 
-        html2pdf().set(opt).from(element).save().then(() => {
-            table.classList.remove('pdf-export-table'); // Cleanup after export
-        });
+        if (Capacitor.isNativePlatform()) {
+            try {
+                const pdfBlob = await html2pdf().set(opt).from(element).output('blob');
+                const reader = new FileReader();
+                reader.readAsDataURL(pdfBlob);
+                reader.onloadend = async () => {
+                    const base64data = reader.result;
+                    await Filesystem.writeFile({
+                        path: opt.filename,
+                        data: base64data,
+                        directory: Directory.Documents,
+                    });
+                    alert(`PDF saved to Documents directory`);
+                };
+            } catch (error) {
+                console.error('Error saving PDF:', error);
+                alert('Error saving PDF. See console for details.');
+            } finally {
+                table.classList.remove('pdf-export-table');
+            }
+        } else {
+            html2pdf().set(opt).from(element).save().then(() => {
+                table.classList.remove('pdf-export-table'); // Cleanup after export
+            });
+        }
     };
 
     const getEvaluationKeysForFundamental = (fundamentalName) => {

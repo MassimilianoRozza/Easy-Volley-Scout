@@ -1,70 +1,91 @@
-# Getting Started with Create React App
+# Volleyball Scout App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Leggi in Italiano](README.it.md)
 
-## Available Scripts
+A React-based web application designed for scouting volleyball matches. This application allows for athlete registration, real-time match scouting, generation of statistical reports, and exporting these reports to PDF.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+*   **Athlete Management:** Register athletes with jersey numbers, names, and surnames.
+*   **Match Scouting:** An intuitive interface for recording evaluations of fundamentals (Service, Reception, Defense, Attack) for each player.
+*   **Auto-saving:** All counter modifications in the scouting interface are automatically saved.
+*   **Dynamic Scouting Grid:** Displays fundamentals as rows and evaluation types (`#`, `+`, `-`, `=`) as columns, with quick increment/decrement buttons.
+*   **Statistical Reporting:** Generates a comprehensive table of individual player statistics and aggregated team totals.
+*   **PDF Export:** Reports can be exported as PDF files. This feature is supported on both web and Android builds. On Android, the file is saved to the `Documents` directory.
+*   **Theming:** Supports both light and dark themes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+*   [Node.js](https://nodejs.org/) and npm (or yarn) installed.
+*   [Android Studio](https://developer.android.com/studio) for Android builds.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Steps
 
-### `npm run build`
+1.  Clone the repository:
+    ```bash
+    git clone <repository-url>
+    ```
+2.  Navigate to the project directory:
+    ```bash
+    cd scout_app_web
+    ```
+3.  Install the dependencies:
+    ```bash
+    npm install
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Running the Application (Development)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To run the application in development mode:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `npm run eject`
+This will open the application in your browser at `http://localhost:3000`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Building for Production
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Web
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+To build the application for web production:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm run build
+```
 
-## Learn More
+This will create a `build` directory with the production-ready static files.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Android
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To build the application for Android:
 
-### Code Splitting
+1.  **Build the web application:**
+    ```bash
+    npm run build
+    ```
+2.  **Sync the changes with the Android project:**
+    ```bash
+    npx cap sync android
+    ```
+3.  **Open the project in Android Studio:**
+    ```bash
+    npx cap open android
+    ```
+4.  In Android Studio, you can build the APK using the menu: `Build` -> `Build Bundle(s) / APK(s)` -> `Build APK(s)`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Usage Manual
 
-### Analyzing the Bundle Size
+The application follows a clear, stage-based navigation:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1.  **Setup:** Enter the name of the match.
+2.  **Athletes:** Register the athletes who will participate in the match.
+3.  **Scouting:** Record the scouting data for each player using the grid.
+4.  **Report:** View the statistical report and export it to PDF if needed.
 
-### Making a Progressive Web App
+## Limitations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+*   The application is specifically designed for volleyball scouting.
+*   The Android build requires permissions to write to the device's storage. The PDF is saved in the `Documents` folder.
